@@ -64,7 +64,7 @@ def screen_dump(post_id, players):
         print('u/%s had %d comments (%d top-level and %d child)' % count_data)
 
 if __name__ == '__main__':
-    reddit_table('kraq3q', ['-Tessa-', 'AmericaJohnLine', 'billiefish', 
+    reddit_table('kspjhu', ['-Tessa-', 'AmericaJohnLine', 'billiefish', 
                               'blxckfire', 'dawnphoenix', 'DealeyLama', 'Dirtymarteeny', 
                               'Epolur77', 'ICantReachTheOctave', 
                               'Infinite_Zone_0868', 'Keight07', 
