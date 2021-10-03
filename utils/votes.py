@@ -27,7 +27,7 @@ def tabulate_votes(sheet, phase):
         else:
             logging.debug('Skipping vote from wrong phase')
             
-    logging.info('No votes_cast from %s in phase [%s]', inactive_players, phase)
+    logging.info('No votes cast by %s in phase [%s]', inactive_players, phase)
 
     logging.debug('Compiling final votes_cast')
     votes_received = dict()

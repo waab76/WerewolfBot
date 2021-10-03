@@ -47,8 +47,8 @@ def activity_check(submission_id, players):
 
 def reddit_table(post_id, players):
     counts = activity_check(post_id, players)
-    sorted_counts = sorted(counts, key = lambda x : x[1], reverse = True)
-    print('##Comment counts for [Phase 4](http://redd.it/%s)\n' % post_id)
+    sorted_counts = sorted(counts, key = lambda x : x[0].lower(), reverse = False)
+    print('##Comment counts for [Phase](http://redd.it/%s)\n' % post_id)
     # Header row
     print('**Player** | **Total** | **Top-level** | **Child**')
     print(':-|:-|:-|:-')
@@ -64,18 +64,5 @@ def screen_dump(post_id, players):
         print('u/%s had %d comments (%d top-level and %d child)' % count_data)
 
 if __name__ == '__main__':
-    reddit_table('kspjhu', ['-Tessa-', 'AmericaJohnLine', 'billiefish', 
-                              'blxckfire', 'dawnphoenix', 'DealeyLama', 'Dirtymarteeny', 
-                              'Epolur77', 'ICantReachTheOctave', 
-                              'Infinite_Zone_0868', 'Keight07', 
-                              'KeiratheUnicorn', 'Larixon', 'laughterislouder', 'meddleofmycause', 
-                              'OiHaveABiscuit', 'saraberry12', 
-                              'swqmb2', 'Tacochel', 'TalkNerdyToMe20', 
-                              'Tipsytippett'])
-    print('\n\n## Previous Phase Data')
-    print('* [Phase 4](https://www.reddit.com/r/hogwartswerewolvesA/comments/kspjhu/devoctrices_of_destiny_phase_5_dinna_fash_yersel/gihjz5w?utm_source=share&utm_medium=web2x&context=3)')
-    print('* [Phase 3](https://www.reddit.com/r/hogwartswerewolvesA/comments/kraq3q/devoctrices_of_destiny_phase_4_its_hedwog_tyvm/gic39d7/?context=3)')
-    print('* [Phase 2](https://www.reddit.com/r/hogwartswerewolvesA/comments/kqktf3/devoctrices_of_destiny_phase_3_k9s_cards_giveth/gi4e9bm?utm_source=share&utm_medium=web2x&context=3)')
-    print('* [Phase 1](https://www.reddit.com/r/hogwartswerewolvesA/comments/kpvnmy/devoctrices_of_destiny_phase_2_i_am_9999_certain/gi2g60z?utm_source=share&utm_medium=web2x&context=3)')
-    print('* [Phase 0](https://www.reddit.com/r/hogwartswerewolvesA/comments/kp8fuq/devoctrices_of_destiny_phase_1_sleep_is_always/ghya8hp?utm_source=share&utm_medium=web2x&context=3)')
+    reddit_table('ol3ui0', ['-Tessa-', 'dawnphoenix', 'DealeyLama', 'Diggsydiggett', 'Disnerding', 'elbowsss', 'HedwigMalfoy', 'KB_black', 'MartinGG99', 'Mathy16', 'Mrrrrh', 'oomps62', 'redpoemage', 'TheLadyMistborn', 'VioletVirtuoso', 'WizKvothe', '-Team-Hufflepuff', 'bigjoe6172', 'birdmanofbombay', 'ElPapo131', 'forsidious', 'kemistreekat', 'Sameri278'])
     
