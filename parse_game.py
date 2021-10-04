@@ -4,7 +4,7 @@ Created on Jul 4, 2021
 @author: rcurtis
 '''
 
-import sys
+import argparse
 
 from utils.activity import activity_check
 from utils.reddit_util import reddit
@@ -66,9 +66,14 @@ players = []
 comment_counts = {}
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Get the comment counts for a HWW game')
+    parser.add_argument('-f', '--flair', help='The flair for the game (e.g.: "Game X.A - 2021")', required=True)
+    
+    flair = parser.parse_args().flair
+    
     subreddit = reddit.subreddit("HogwartsWerewolvesB+HogwartsWerewolvesA+HogwartsWerewolves")
     
-    game_post_generator = subreddit.search(query=' '.join(sys.argv[1:]), sort="new", time_filter="all")
+    game_post_generator = subreddit.search(query='flair:"{}"'.format(flair), sort="new", time_filter="all")
     game_posts = []
     
     for post in game_post_generator:
@@ -89,5 +94,5 @@ if __name__ == '__main__':
         else:
             handle_post(post)
     
-    export_to_csv('{}.csv'.format(' '.join(sys.argv[1:])))
-    export_to_markdown('{}.md'.format(' '.join(sys.argv[1:])))
+    export_to_csv('{}.csv'.format(flair))
+    export_to_markdown('{}.md'.format(flair))
