@@ -20,7 +20,7 @@ def parse_roster(roster_post):
             in_roster = False
             continue
         else:
-            player = line.split(' | ')[0].replace('/u/', '').replace('u/', '').replace('\\', '')
+            player = line.split(' | ')[0].replace('/u/', '').replace('u/', '').replace('\\', '').replace('/', '')
             players.append(player)
     print(players)
     
@@ -34,8 +34,16 @@ def handle_post(post):
         
 def export_to_csv(filename):
     csv = open(filename, 'w')
+    header_line = 'Player, Total'
+    
+    for phase_num in range(0, len(comment_counts[players[0]])):
+        header_line += ', Phase {} '.format(phase_num)
+    header_line += '\n'
+    csv.write(header_line)
+    
     for player in players:
         line = player
+        line += ', {}'.format(sum(comment_counts[player]))
         for phase_total in comment_counts[player]:
             line += ',{}'.format(phase_total)
         line += '\n'
@@ -44,11 +52,11 @@ def export_to_csv(filename):
     
 def export_to_markdown(filename):
     markdown = open(filename, 'w')
-    header_line = '**Player**'
-    second_line = ':-'
+    header_line = '**Player** | **Total**'
+    second_line = ':- | -:'
     
     for phase_num in range(0, len(comment_counts[players[0]])):
-        header_line += '| Phase {} '.format(phase_num)
+        header_line += '| **Phase {}** '.format(phase_num)
         second_line += '|-:'
     
     markdown.write(header_line + '\n')
@@ -56,8 +64,9 @@ def export_to_markdown(filename):
     
     for player in players:
         line = player
+        line += ' | {} '.format(sum(comment_counts[player]))
         for phase_total in comment_counts[player]:
-            line += "| {} ".format(phase_total)
+            line += '| {} '.format(phase_total)
         line += '\n'
         markdown.write(line)
     markdown.close()
@@ -71,9 +80,9 @@ if __name__ == '__main__':
     
     flair = parser.parse_args().flair
     
-    subreddit = reddit.subreddit("HogwartsWerewolvesB+HogwartsWerewolvesA+HogwartsWerewolves")
+    subreddit = reddit.subreddit('HogwartsWerewolvesB+HogwartsWerewolvesA+HogwartsWerewolves')
     
-    game_post_generator = subreddit.search(query='flair:"{}"'.format(flair), sort="new", time_filter="all")
+    game_post_generator = subreddit.search(query='flair:"{}"'.format(flair), sort='new', time_filter='all')
     game_posts = []
     
     for post in game_post_generator:
