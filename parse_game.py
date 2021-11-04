@@ -14,13 +14,15 @@ def parse_roster(roster_post):
     in_roster = False
     for line in roster_post.selftext.splitlines():
         if not in_roster:
-            in_roster = '--- |' in line
+            in_roster = ('--- |' in line) or (':-' in line) or ('-:' in line)
             continue
         elif '' == line:
             in_roster = False
             continue
         else:
-            player = line.split(' | ')[0].replace('/u/', '').replace('u/', '').replace('\\', '').replace('/', '')
+            if line.strip().startswith('|'):
+                line = line.strip()[1:]
+            player = line.split('|')[0].replace('/u/', '').replace('u/', '').replace('\\', '').replace('/', '')
             players.append(player)
     print(players)
     
@@ -71,18 +73,28 @@ def export_to_markdown(filename):
         markdown.write(line)
     markdown.close()
     
-players = []
+players = ['alishbazya', 'HedwigMalfoy', 'MartinGG99', 'elbowsss', 'Epolur77', 'Dangerhaz']
 comment_counts = {}
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Get the comment counts for a HWW game')
-    parser.add_argument('-f', '--flair', help='The flair for the game (e.g.: "Game X.A - 2021")', required=True)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('-f', '--flair', help='The flair for the game (e.g.: "Game X.A - 2021")')
+    group.add_argument('-t', '--title', help='Text to use in a title search')
     
-    flair = parser.parse_args().flair
+    args = parser.parse_args()
     
+    game_post_generator = 0
+    output = ''
     subreddit = reddit.subreddit('HogwartsWerewolvesB+HogwartsWerewolvesA+HogwartsWerewolves')
     
-    game_post_generator = subreddit.search(query='flair:"{}"'.format(flair), sort='new', time_filter='all')
+    if args.flair:
+        output = args.flair
+        game_post_generator = subreddit.search(query='flair:"{}"'.format(args.flair), sort='new', time_filter='year')
+    elif args.title:
+        output = args.title
+        game_post_generator = subreddit.search(query='"{}"'.format(args.title), sort='new', time_filter='year')
+    
     game_posts = []
     
     for post in game_post_generator:
@@ -91,7 +103,7 @@ if __name__ == '__main__':
     roster_found = False
     for post in reversed(game_posts):
         if not roster_found:
-            if 'Roster' not in post.title:
+            if 'roster' not in post.title.lower():
                 continue
             else:
                 roster_found = True
@@ -103,5 +115,5 @@ if __name__ == '__main__':
         else:
             handle_post(post)
     
-    export_to_csv('{}.csv'.format(flair))
-    export_to_markdown('{}.md'.format(flair))
+    export_to_csv('{}.csv'.format(output))
+    export_to_markdown('{}.md'.format(output))
