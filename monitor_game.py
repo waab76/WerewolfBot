@@ -67,13 +67,16 @@ def handle_comment(comment, edit=False):
     gelf_object = dict()
     gelf_object['version'] = '1.1'
     gelf_object['host'] = 'HWW'
-    gelf_object['short_message'] = ''.format()
-    gelf_object['timestamp'] = comment.created_utc
+    gelf_object['short_message'] = 'Comment from {} on {} in {}'.format(comment.author.name, comment.submission.title, comment.submission.subreddit.display_name)
+    gelf_object['timestamp'] = comment.edited if comment.edited > 0 else comment.created_utc
     gelf_object['level'] = 1
     gelf_object['_hww_post_title'] = comment.submission.title
     gelf_object['_hww_player'] = comment.author.name
     gelf_object['_hww_comment'] = comment.body
-    gelf_object['_hww_comment_edited'] = edit
+    gelf_object['_hww_comment_id'] = comment.id
+    gelf_object['_hww_comment_edited'] = comment.edited > 0
+    gelf_object['_hww_subreddit'] = comment.submission.subreddit.display_name
+    gelf_object['_hww_game_flair'] = comment.submission.link_flair_text
     gelf_text = '{}\n'.format(json.dumps(gelf_object))
     logging.debug('Submitting GELF message %s', json.dumps(gelf_object))
 
