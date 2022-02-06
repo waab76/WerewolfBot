@@ -76,16 +76,29 @@ comment_counts = {}
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Get the comment counts for a HWW game')
-    parser.add_argument('-f', '--flair', help='The flair for the game (e.g.: "Game X.A - 2021")', required=True)
+    parser.add_argument('-f', '--flair', help='The flair for the game (e.g.: "Game X.A - 2021")')
+    parser.add_argument('-k', '--keyword', help='Title keywords to search for')
     
     flair = parser.parse_args().flair
+    keyword = parser.parse_args().keyword
+    title = "Output"
     
-    subreddit = reddit.subreddit('HogwartsWerewolvesB+HogwartsWerewolvesA+HogwartsWerewolves')
+    subreddit = reddit.subreddit('hogwartswerewolvesA')
     
-    game_post_generator = subreddit.search(query='flair:"{}"'.format(flair), sort='new', time_filter='all')
+    game_post_generator = None
+    
+    if flair:    
+        print(flair)
+        game_post_generator = subreddit.search(query='flair:"{}"'.format(flair), sort='new', time_filter='all')
+        title = flair
+    elif keyword:
+        game_post_generator = subreddit.search(query='{}'.format(keyword), sort='new', time_filter='all')
+        title = keyword
+    
     game_posts = []
     
     for post in game_post_generator:
+        print('Processing {}'.format(post.title))
         game_posts.append(post)
     
     roster_found = False
@@ -103,5 +116,5 @@ if __name__ == '__main__':
         else:
             handle_post(post)
     
-    export_to_csv('{}.csv'.format(flair))
-    export_to_markdown('{}.md'.format(flair))
+    export_to_csv('{}.csv'.format(title))
+    export_to_markdown('{}.md'.format(title))

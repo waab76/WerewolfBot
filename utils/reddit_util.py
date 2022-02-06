@@ -20,7 +20,7 @@ reddit = praw.Reddit(bot_name, user_agent=user_agent)
 logging.debug('Logged on to Reddit as [%s]', reddit.user)
 
 # Get a handle on our preferred subreddit
-game_subreddit = reddit.subreddit("HogwartsWerewolves")
+game_subreddit = reddit.subreddit("HogwartsWerewolvesA")
 wolf_subreddit = reddit.subreddit("HogwartsWerewolvesB")
 
 def get_submission(post_id):
