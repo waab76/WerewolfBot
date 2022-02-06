@@ -14,13 +14,15 @@ def parse_roster(roster_post):
     in_roster = False
     for line in roster_post.selftext.splitlines():
         if not in_roster:
-            in_roster = '--- |' in line
+            in_roster = ('--- |' in line) or (':-' in line) or ('-:' in line)
             continue
         elif '' == line:
             in_roster = False
             continue
         else:
-            player = line.split(' | ')[0].replace('/u/', '').replace('u/', '').replace('\\', '').replace('/', '')
+            if line.strip().startswith('|'):
+                line = line.strip()[1:]
+            player = line.split('|')[0].replace('/u/', '').replace('u/', '').replace('\\', '').replace('/', '')
             players.append(player)
     print(players)
     
@@ -71,7 +73,7 @@ def export_to_markdown(filename):
         markdown.write(line)
     markdown.close()
     
-players = []
+players = ['alishbazya', 'HedwigMalfoy', 'MartinGG99', 'elbowsss', 'Epolur77', 'Dangerhaz']
 comment_counts = {}
 
 if __name__ == '__main__':
@@ -104,7 +106,7 @@ if __name__ == '__main__':
     roster_found = False
     for post in reversed(game_posts):
         if not roster_found:
-            if 'Roster' not in post.title:
+            if 'roster' not in post.title.lower():
                 continue
             else:
                 roster_found = True
@@ -118,3 +120,4 @@ if __name__ == '__main__':
     
     export_to_csv('{}.csv'.format(title))
     export_to_markdown('{}.md'.format(title))
+    
