@@ -9,6 +9,9 @@ import argparse
 from utils.activity import activity_check
 from utils.reddit_util import reddit
 
+players = []
+comment_counts = {}
+
 def parse_roster(roster_post):
     print('Parsing roster from post: {}'.format(roster_post.title))
     in_roster = False
@@ -22,7 +25,7 @@ def parse_roster(roster_post):
         else:
             if line.strip().startswith('|'):
                 line = line.strip()[1:]
-            player = line.split('|')[0].replace('/u/', '').replace('u/', '').replace('\\', '').replace('/', '')
+            player = line.split('|')[0].replace('/u/', '').replace('u/', '').replace('\\', '').replace('/', '').strip()
             players.append(player)
     print(players)
     
@@ -73,8 +76,6 @@ def export_to_markdown(filename):
         markdown.write(line)
     markdown.close()
     
-players = ['alishbazya', 'HedwigMalfoy', 'MartinGG99', 'elbowsss', 'Epolur77', 'Dangerhaz']
-comment_counts = {}
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Get the comment counts for a HWW game')
@@ -100,7 +101,6 @@ if __name__ == '__main__':
     game_posts = []
     
     for post in game_post_generator:
-        print('Processing {}'.format(post.title))
         game_posts.append(post)
     
     roster_found = False
