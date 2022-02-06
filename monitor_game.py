@@ -90,4 +90,4 @@ def handle_comment(comment, edit=False):
 
 logging.debug('Starting child threads')
 threading.Thread(target=monitor_comments, name='comments').start()
-threading.Thread(target=monitor_edits, name='edits').start()
+# threading.Thread(target=monitor_edits, name='edits').start()
