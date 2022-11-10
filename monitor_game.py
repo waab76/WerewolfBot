@@ -30,7 +30,7 @@ from utils.reddit_util import reddit
 
 
 logging.info('Connected to Reddit instance as %s', reddit.user.me())
-subreddit = reddit.subreddit('HogwartsWerewolvesA+HogwartsWerewolvesB+HogwartsWerewolves')
+subreddit = reddit.subreddit('HiddenWerewolvesA+HiddenWerewolvesB+HiddenWerewolves')
 
 def monitor_comments():
     while True:
